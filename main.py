@@ -5,18 +5,18 @@ from flask import Flask, request, jsonify
 import nltk
 nltk.download('punkt_tab')
 
-wn = Wordnet()
-
-sent = Text("test").tag_layer()
-
-print("1")
-print(sent)
-print("2")
-
-
 app = Flask(__name__)
 
-@app.route('/test', methods=['POST'])
+@app.route('/api')
+def api_data():
+    sõne = request.args.get('sone')
+    synod = Wordnet()[sõne]
+    teema = [s.name.split('.') for s in synod]
+    
+    data = {'sõnastik': teema}
+    return jsonify(data)
 
-def msg():
-    return jsonify(request.json)
+#debugger 
+if __name__ == "__main__":
+    app.run(debug=True)
+    app.run(host='localhost', port=5000)
