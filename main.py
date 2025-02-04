@@ -14,7 +14,8 @@ app = Flask(__name__)
 @app.route('/api')
 def api_data():
     sõne = request.args.get('sone')
-    synod = Wordnet(version='2.3.2')[sõne]
+    synod = Wordnet()[sõne]
+    #synod = Wordnet(version='2.3.2')[sõne]
     teema = [s.name.split('.') for s in synod]
     
     data = {'sõnastik': teema}
