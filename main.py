@@ -6,9 +6,6 @@ import nltk
 
 nltk.download('punkt_tab')
 
-# Download version '2.3.2'
-download('estwordnet_2020-06-30')
-
 app = Flask(__name__)
 
 def sõne_to_synod(sõne):
