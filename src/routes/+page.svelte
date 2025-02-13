@@ -1,2 +1,32 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<div class="container">
+    <h1>Scrabble</h1>
+    <button class="blue">
+        <a href="/game">Klassikaline</a>
+    </button> 
+    <button class="blue"><a href="/custom">Kohandatud</a></button> 
+</div>
+
+<style>
+
+    h1 {
+        font-size: 10em;
+
+    }
+
+    .container {
+		display: flex;
+		flex-direction: column;
+		gap: 1em;   
+		align-items: center;
+		justify-content: center;
+	}
+
+    .blue {
+        background-color: rgb(52, 82, 148);
+        color: white;   
+        border-radius: 15px;
+        font-size: 2em;
+        width: 8em;
+        height: 2em;
+    }
+</style>
