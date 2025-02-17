@@ -1,0 +1,45 @@
+<script lang="ts">
+    import { draggable } from '@neodrag/svelte';
+    import type { DragOptions } from '@neodrag/svelte';
+
+    let { tile_id, start_x, start_y } = $props();
+
+    let position = $state({ start_x: 0, start_y: 0 });
+
+    export function disable() {
+        options.disabled = true;
+    }
+  
+    let options: DragOptions = $state({
+        disabled: false,
+        position,
+        onDrag: ({ offsetX, offsetY }) => {
+            position.x = offsetX
+            position.y = offsetY
+        },
+        onDragEnd: ({ offsetX, offsetY }) => {
+            let box = document.getElementsByClassName('box')[0].getBoundingClientRect();
+            box.style.left = toString(Math.round(box.right/50, 0) * 50)+'px';
+            box.style.top = toString(Math.round(box.top/50, 0) * 50)+'px';
+            
+            console.log(rect.top, rect.right, rect.bottom, rect.left);
+        },
+      
+    });
+</script>
+
+<div use:draggable={options}
+    class="box"
+    id={ tile_id }> 
+    {position.x}, {position.y} 
+</div>
+
+<style>
+
+.box {
+    width: 50px;
+    height: 50px;
+    background-color: pink;
+}
+
+</style>
