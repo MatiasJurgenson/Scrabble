@@ -2,16 +2,17 @@ import { type letterTile } from "../types/tiles";
 
 
 // kood: https://www.sveltelab.dev/xzz3zkyjzwe6kfk
-export function draggable(node, data: letterTile) {
+export function draggable(node, data) {
 	let state = data;
 
 	node.draggable = true;
 	node.style.cursor = 'grab';
 
-	function handle_dragstart(e) {
+	function handle_dragstart(e: DragEvent) {
 		if (!e.dataTransfer) return;
 		if (!node.draggable) return;
 		e.dataTransfer.setData('text/plain', state);
+		console.log(e.dataTransfer);
 	}
 
 	function disable() {
@@ -24,8 +25,8 @@ export function draggable(node, data: letterTile) {
 	}
 
 	node.addEventListener('dragstart', handle_dragstart);
-	document.querySelector('#return-toggle').addEventListener('click', disable);
-	document.querySelector('#return-toggle').addEventListener('click', handleClick);
+	document.querySelector('#end-round').addEventListener('click', disable);
+	document.querySelector('#end-round').addEventListener('click', handleClick);
 
 	return {
 		update(data) {
@@ -47,23 +48,23 @@ export function dropzone(node, options) {
 		...options
 	};
 
-	function handle_dragenter(e) {
+	function handle_dragenter(e: DragEvent) {
 		if (!(e.target instanceof HTMLElement)) return;
 		e.target.classList.add(state.dragover_class);
 	}
 
-	function handle_dragleave(e) {
+	function handle_dragleave(e: DragEvent) {
 		if (!(e.target instanceof HTMLElement)) return;
 		e.target.classList.remove(state.dragover_class);
 	}
 
-	function handle_dragover(e) {
+	function handle_dragover(e: DragEvent) {
 		e.preventDefault();
 		if (!e.dataTransfer) return;
 		e.dataTransfer.dropEffect = state.dropEffect;
 	}
 
-	function handle_drop(e) {
+	function handle_drop(e: DragEvent) {
 		e.preventDefault();
 		if (!e.dataTransfer) return;
 		const data = e.dataTransfer.getData('text/plain');

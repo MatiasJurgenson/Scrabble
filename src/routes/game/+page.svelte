@@ -7,7 +7,7 @@
 <!--kood: https://www.sveltelab.dev/xzz3zkyjzwe6kfk-->
 
 
-<button id="return-toggle">Click</button>
+<button id="end-round">Käigu Lõpp</button>
 
 <ul>
 	{#each data.columns as column}
