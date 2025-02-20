@@ -1,4 +1,4 @@
-// kood: https://www.sveltelab.dev/xzz3zkyjzwe6kfk
+// baaskood: https://www.sveltelab.dev/xzz3zkyjzwe6kfk
 
 export const load = async () => {
 	return {

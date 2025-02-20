@@ -4,7 +4,7 @@
 	export let data;
 </script>
 
-<!--kood: https://www.sveltelab.dev/xzz3zkyjzwe6kfk-->
+<!--baaskood: https://www.sveltelab.dev/xzz3zkyjzwe6kfk-->
 
 
 <button id="end-round">Käigu Lõpp</button>

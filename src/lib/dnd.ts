@@ -1,9 +1,6 @@
-import { type letterTile } from "../types/tiles";
-
-
-// kood: https://www.sveltelab.dev/xzz3zkyjzwe6kfk
-export function draggable(node, data) {
-	let state = data;
+// baaskood: https://www.sveltelab.dev/xzz3zkyjzwe6kfk
+export function draggable(node: any, data: string) {
+	let state = data; // üldiselt on tile id
 
 	node.draggable = true;
 	node.style.cursor = 'grab';
@@ -12,7 +9,6 @@ export function draggable(node, data) {
 		if (!e.dataTransfer) return;
 		if (!node.draggable) return;
 		e.dataTransfer.setData('text/plain', state);
-		console.log(e.dataTransfer);
 	}
 
 	function disable() {
@@ -20,28 +16,22 @@ export function draggable(node, data) {
 		node.style.cursor = 'default';
 	}
 
-	function handleClick() {
-		console.log('click listener');
-	}
-
 	node.addEventListener('dragstart', handle_dragstart);
-	document.querySelector('#end-round').addEventListener('click', disable);
-	document.querySelector('#end-round').addEventListener('click', handleClick);
+	document.querySelector('#end-round')!.addEventListener('click', disable);
 
 	return {
-		update(data) {
+		update(data: string) {
 			state = data;
 		},
 
 		destroy() {
 			node.removeEventListener('dragstart', handle_dragstart);
-			document.querySelector('#return-toggle').addEventListener('click', disable);
-			document.querySelector('#return-toggle').removeEventListener('click', handleClick);
+			document.querySelector('#end-round')!.addEventListener('click', disable);
 		}
 	};
 }
 
-export function dropzone(node, options) {
+export function dropzone(node: any, options: any) {
 	let state = {
 		dropEffect: 'move',
 		dragover_class: 'droppable',
@@ -79,7 +69,7 @@ export function dropzone(node, options) {
 	node.addEventListener('drop', handle_drop);
 
 	return {
-		update(options) {
+		update(options: any) {
 			state = {
 				dropEffect: 'move',
 				dragover_class: 'droppable',
