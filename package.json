@@ -23,6 +23,7 @@
 		"vite": "^6.0.0"
 	},
 	"dependencies": {
-		"@neodrag/svelte": "^2.3.0"
+		"@neodrag/svelte": "^2.3.0",
+		"dotenv": "^16.4.7"
 	}
 }
