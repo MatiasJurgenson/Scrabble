@@ -18,12 +18,12 @@ def sõne_to_synod(sõne):
     synod = Wordnet()[lemma]
     return synod
 
-@app.route('/api')
+@app.route('/')
 def test():
     return "API is working"
 
 # teema genereerimise jaoks
-@app.route('/api/teema')
+@app.route('/teema')
 def teema_data():
     sõne = request.args.get('sone')
     synod = sõne_to_synod(sõne)
@@ -34,7 +34,7 @@ def teema_data():
     data = {'sõnastik': teema}
     return jsonify(data)
 
-@app.route('/api/tahendus')
+@app.route('/tahendus')
 def tahendus_data():
     sõne = request.args.get('sone')
     synod = sõne_to_synod(sõne)
