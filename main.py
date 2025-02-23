@@ -6,6 +6,10 @@ import nltk
 
 nltk.download('punkt_tab')
 
+
+# ver: estwordnet_2023-07-20, estwordnet_2020-06-30
+download('estwordnet_2023-07-20')
+
 app = Flask(__name__)
 
 def sõne_to_synod(sõne):
@@ -14,8 +18,12 @@ def sõne_to_synod(sõne):
     synod = Wordnet()[lemma]
     return synod
 
+@app.route('/api')
+def test():
+    return "API is working"
+
 # teema genereerimise jaoks
-@app.route('/teema')
+@app.route('/api/teema')
 def teema_data():
     sõne = request.args.get('sone')
     synod = sõne_to_synod(sõne)
@@ -26,7 +34,7 @@ def teema_data():
     data = {'sõnastik': teema}
     return jsonify(data)
 
-@app.route('/tahendus')
+@app.route('/api/tahendus')
 def tahendus_data():
     sõne = request.args.get('sone')
     synod = sõne_to_synod(sõne)
