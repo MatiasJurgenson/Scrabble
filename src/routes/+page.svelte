@@ -22,7 +22,7 @@
 	}
 
     .blue {
-        background-color: rgb(52, 82, 148);
+        background-color: #345394;
         color: white;   
         border-radius: 15px;
         font-size: 2em;

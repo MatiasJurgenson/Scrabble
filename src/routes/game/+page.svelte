@@ -10,6 +10,7 @@
 <!--baaskood: https://www.sveltelab.dev/xzz3zkyjzwe6kfk-->
 
 
+
 <button id="end-round">Käigu Lõpp</button>
 
 <ul>
@@ -61,9 +62,7 @@
 </table>
 
 <style>
-	:global(html) {
-    	background-color: #345394;
-	}
+	@import 'game.css';
 
 	ul {
 		list-style: none;
