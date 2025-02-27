@@ -7,8 +7,6 @@
 </div>
 
 <style>
-    @import '/static/shared.css';
-
     h1 {
         font-size: 10em;
 
