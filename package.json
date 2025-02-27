@@ -24,6 +24,7 @@
 	},
 	"dependencies": {
 		"@neodrag/svelte": "^2.3.0",
-		"dotenv": "^16.4.7"
+		"dotenv": "^16.4.7",
+		"svelte-body": "^2.0.0"
 	}
 }

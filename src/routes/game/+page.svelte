@@ -1,15 +1,19 @@
 <script>
-    import { board } from '$lib/board.js';
+	import { board } from '$lib/board.js';
 	import { dropzone, draggable } from '$lib/dnd';
 
 	export let data;
 
 	export { board } from '$lib/board.js';
+
+	// html taustavärvi muutmiseks
+	$: style = `<style> html { background-color: #345394; } </style>`; 
+
 </script>
 
 <!--baaskood: https://www.sveltelab.dev/xzz3zkyjzwe6kfk-->
 
-
+{@html style}
 
 <button id="end-round">Käigu Lõpp</button>
 
@@ -62,8 +66,6 @@
 </table>
 
 <style>
-	@import '/static/game.css';
-
 	ul {
 		list-style: none;
 		margin: 0;
