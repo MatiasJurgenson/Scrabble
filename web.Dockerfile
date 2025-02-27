@@ -1,5 +1,10 @@
 # Kood saadud https://khromov.se/dockerizing-your-sveltekit-applications-a-practical-guide/
 
+
+### jooksutamine
+# docker build -f web.Dockerfile -t scrabble .
+# docker run -dit -p 3000:3000 --name scrabble scrabble
+
 FROM node:22-alpine AS builder
 WORKDIR /
 COPY package*.json ./

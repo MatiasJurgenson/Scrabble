@@ -1,5 +1,9 @@
 # Baas file saadud: https://www.koyeb.com/docs/deploy/flask
 
+### jooksutamine
+# docker build -f api.Dockerfile -t api .
+# docker run -dit -p 5000:8000 --name api api
+
 FROM python:3.12 AS builder
  
 WORKDIR /

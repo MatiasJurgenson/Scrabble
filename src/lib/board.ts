@@ -57,7 +57,7 @@ for (let row = 0; row < 15; row++) {
         }
       }
       // keskmised read
-      if (collumn % 4 === 1) {
+      if ((collumn % 4 === 1) && (row === 5 || row === 9)) {
         board[row][collumn] = {
             id: tile_id,
             multipliyer: 3,
