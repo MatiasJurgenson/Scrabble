@@ -1,7 +1,10 @@
 <script>
+    import { board } from '$lib/board.js';
 	import { dropzone, draggable } from '$lib/dnd';
 
 	export let data;
+
+	export { board } from '$lib/board.js';
 </script>
 
 <!--baaskood: https://www.sveltelab.dev/xzz3zkyjzwe6kfk-->
@@ -38,7 +41,30 @@
 	{/each}
 </ul>
 
+<table>
+	<tbody>
+		{#each board as row, rowIndex}
+			<tr>
+				{#each row as tile, cellIndex (board[rowIndex][cellIndex])}
+					{#if tile.type === 'word'}
+						<td class="tile" style="background-color: {tile.color}"> {tile.multipliyer}W </td> <!-- {rowIndex} {cellIndex} {tile.id} -->
+					{:else if tile.type === 'letter'}
+						<td class="tile" style="background-color: {tile.color}"> {tile.multipliyer}L </td> <!-- {rowIndex} {cellIndex} {tile.id} -->
+					{:else}
+						<td class="tile" style="background-color: {tile.color}"></td> <!-- {rowIndex} {cellIndex} {tile.id} -->
+					{/if}
+					
+				{/each}
+			</tr>
+		{/each}
+	</tbody>
+</table>
+
 <style>
+	:global(html) {
+    	background-color: #345394;
+	}
+
 	ul {
 		list-style: none;
 		margin: 0;
@@ -50,7 +76,7 @@
 	li {
 		padding: 1rem;
 		background-color: var(--sk-back-1);
-		border: 1px solid black;
+		
 		border-radius: 0.5rem;
 		border-color: var(--sk-back-5);
 	}
@@ -75,5 +101,18 @@
 
 	.column:global(.droppable) * {
 		pointer-events: none;
+	}
+
+	table {
+		border-collapse: collapse;
+	}
+
+	.tile {
+		border: 1px solid black;
+		border-radius: 0;
+		width: 48px;
+		height: 48px;
+		text-align: center;
+		font-size: 1.5rem;
 	}
 </style>

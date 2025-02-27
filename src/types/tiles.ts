@@ -9,4 +9,5 @@ export interface boardTile {
     multipliyer: number;
     letter?: letterTile;
     id: number;
+    color: string;
 };
