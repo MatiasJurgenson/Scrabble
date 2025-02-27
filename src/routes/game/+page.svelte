@@ -62,7 +62,7 @@
 </table>
 
 <style>
-	@import 'game.css';
+	@import '/static/game.css';
 
 	ul {
 		list-style: none;
