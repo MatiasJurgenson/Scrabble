@@ -6,7 +6,7 @@ import { board } from '$lib/board.js';
 
 export const load: PageServerLoad = async ({ fetch }) => {
 
-	const url = 'http://localhost:5000/sonastik?nr=3';
+	const url = 'https://scrabble.matias.ee/api/sonastik?nr=3';
 	const response = await fetch(url);
 	const data = await response.json();
 	const stats = data.stats;
