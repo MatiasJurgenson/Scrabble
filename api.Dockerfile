@@ -22,6 +22,7 @@ WORKDIR /
  
 COPY --from=builder /venv venv
 COPY main.py main.py
+COPY /words /words
  
 ENV VIRTUAL_ENV=/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"

@@ -4,6 +4,8 @@ from flask import Flask, request, jsonify
 from estnltk import download
 import nltk
 
+import sys
+sys.path.append('/words/prog')
 from words.prog import stats
 
 nltk.download('punkt_tab')
