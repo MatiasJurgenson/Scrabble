@@ -1,28 +1,24 @@
 // baaskood: https://www.sveltelab.dev/xzz3zkyjzwe6kfk
+import type { PageServerLoad } from './$types';
+import { create_letter_bag } from '$lib/letter_bag.js';
+import type { letterTile } from '../../types/tiles';
+import { board } from '$lib/board.js';
 
-export const load = async () => {
+export const load: PageServerLoad = async ({ fetch }) => {
+
+	const url = 'http://localhost:5000/sonastik?nr=3';
+	const response = await fetch(url);
+	const data = await response.json();
+	const stats = data.stats;
+	const sõnad = data.sõnastik;
+	let letter_bag = create_letter_bag(stats);
+	let hand: letterTile[] = [];
+
+	
+
 	return {
-		columns: [
-			{
-				id: 1,
-				label: '📫 Todo'
-			},
-			{
-				id: 2,
-				label: '✅ Done'
-			}
-		],
-		cards: [
-			{
-				column: 1,
-				id: 'a',
-				title: 'Wash Dishes'
-			},
-			{
-				column: 2,
-				id: 'b',
-				title: 'Code DND Example'
-			}
-		]
+		board,
+		letter_bag,
+		hand,
 	}
 };

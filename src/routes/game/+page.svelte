@@ -1,119 +1,117 @@
-<script>
-	import { board } from '$lib/board.js';
-	import { dropzone, draggable } from '$lib/dnd';
+<script lang="ts">
+	import { draw_tiles } from '$lib/letter_bag.js';
+
+	import { dndzone } from 'svelte-dnd-action';
+	import { flip } from 'svelte/animate';
+	
+	import Tile from './Tile.svelte';
+	import Square from './Square.svelte';
+    import { getAllsquareContext, getAllsquareDisabled, setsquareDisabled } from '$lib/context';
 
 	export let data;
 
-	export { board } from '$lib/board.js';
 
-	// html taustavärvi muutmiseks
-	//$: style = `<style> html { background-color: #345394; } </style>`; 
+	let items = data.hand;
+	let letter_bag = data.letter_bag;
+	let board = data.board;
+		
+	function draw_hand() {
+		let new_hand
+		[new_hand, letter_bag] = draw_tiles(letter_bag, 8-items.length)
 
+		items = items.concat(new_hand)
+
+		setsquareDisabled()
+		board.forEach(col => {col.forEach(square => {
+			for (let squareDisabled_key of getAllsquareDisabled().keys()) {
+					if (squareDisabled_key === square.id) {
+						square.dragDisabled = true 
+					}
+    			}
+			});
+		});
+
+		board = structuredClone(board);
+	}
+
+	draw_hand()
+	
+	function handleDnd(e: any) {
+		items = e.detail.items;
+	}
+
+	function info() {
+		let stuff = getAllsquareContext()
+		let stuff_2 = getAllsquareDisabled()
+		console.log(stuff, stuff_2)
+	}
+	
+	const flipDurationMs = 300;
+	
+$: options = {
+	items,
+	flipDurationMs,
+	morphDisabled: true
+};
 </script>
 
 <!--baaskood: https://www.sveltelab.dev/xzz3zkyjzwe6kfk-->
 
+<button on:click={draw_hand} id="end-round">Käigu Lõpp</button>
+
+<button on:click={info}>
+	Get info
+</button>
 
 
-<button id="end-round">Käigu Lõpp</button>
-
-<ul>
-	{#each data.columns as column}
-		{@const cards = data.cards.filter((c) => c.column === column.id)}
-		<li
-			class="column"
-			use:dropzone={{
-				on_dropzone(card_id) {
-					const card = data.cards.find((c) => c.id === card_id);
-					card.column = column.id;
-					data = data;
-				}
-			}}
-		>
-			<h2>{column.label}</h2>
-			{#if cards.length > 0}
-				<ul class="cards">
-					{#each cards as card}
-						<li use:draggable={card.id}>
-							{card.title}
-						</li>
-					{/each}
-				</ul>
-			{:else}
-				<p>No Cards...</p>
-			{/if}
-		</li>
-	{/each}
-</ul>
-
-<table>
-	<tbody>
-		{#each board as row, rowIndex}
-			<tr>
-				{#each row as tile, cellIndex (board[rowIndex][cellIndex])}
-					{#if tile.type === 'word'}
-						<td class="tile" style="background-color: {tile.color}"> {tile.multipliyer}W </td> <!-- {rowIndex} {cellIndex} {tile.id} -->
-					{:else if tile.type === 'letter'}
-						<td class="tile" style="background-color: {tile.color}"> {tile.multipliyer}L </td> <!-- {rowIndex} {cellIndex} {tile.id} -->
-					{:else}
-						<td class="tile" style="background-color: {tile.color}"></td> <!-- {rowIndex} {cellIndex} {tile.id} -->
-					{/if}
-					
+<div class="game-container">
+	<div class="grid" >
+		{#each board as col, colIndex}
+			<div class="col">
+				{#each col as square, cellIndex (board[colIndex][cellIndex].id)}
+					<Square dragDisabled={ square.dragDisabled } color={ square.color } type={ square.type } mult={ square.multipliyer }  squere_id={ board[colIndex][cellIndex].id } />
 				{/each}
-			</tr>
+			</div>
 		{/each}
-	</tbody>
-</table>
+	</div>
+	
+	<div class="rack" use:dndzone={options} on:consider={handleDnd} on:finalize={handleDnd}>
+		{#each items as item(item.id)}
+			<div animate:flip={{ duration: flipDurationMs }}>
+				<Tile bind:letter={item.letter} bind:points={item.points}/>
+			</div>
+		{/each}
+	</div>
+	
+</div>
 
 <style>
-	ul {
-		list-style: none;
-		margin: 0;
-		padding: 0;
+	
+	.game-container {
 		display: flex;
-		gap: 1rem;
+		height: 100%;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
 	}
-
-	li {
-		padding: 1rem;
-		background-color: var(--sk-back-1);
-		
-		border-radius: 0.5rem;
-		border-color: var(--sk-back-5);
+	
+	.grid {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
 	}
-
-	.column {
-		min-width: 25ch;
-	}
-
-	h2 {
-		margin-block-start: 0;
-		margin-block-end: 0.5rem;
-	}
-
-	.cards {
+	.col {
+		display: flex;
 		flex-direction: column;
 	}
-
-	.column:global(.droppable) {
-		outline: 0.1rem solid var(--sk-theme-1);
-		outline-offset: 0.25rem;
+	
+	.rack {
+		display: flex;
+		justify-content: flex-start;
+		flex-grow: 0;
+		width: calc((min(5vmin, 50px) + 4px) * 7)
 	}
-
-	.column:global(.droppable) * {
-		pointer-events: none;
-	}
-
-	table {
-		border-collapse: collapse;
-	}
-
-	.tile {
-		border: 1px solid black;
-		border-radius: 0;
-		width: 48px;
-		height: 48px;
-		text-align: center;
-		font-size: 1.5rem;
+	.rack > * {
+		margin: 2px;
 	}
 </style>
