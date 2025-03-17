@@ -17,6 +17,7 @@
 		"@sveltejs/kit": "^2.16.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
 		"@types/node": "^22.13.8",
+		"sv-popup": "^0.5.3",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
 		"svelte-dnd-action": "^0.9.57",
@@ -27,6 +28,7 @@
 	"dependencies": {
 		"@neodrag/svelte": "^2.3.0",
 		"dotenv": "^16.4.7",
-		"svelte-body": "^2.0.0"
+		"svelte-body": "^2.0.0",
+		"svelte-easy-popover": "^1.0.0"
 	}
 }

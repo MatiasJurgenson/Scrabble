@@ -10,4 +10,8 @@ export default defineConfig({
 		  allow: ['..'],
 		},
 	  },
+	ssr: {
+		noExternal: ['@popperjs/core']
+	}
+
 });

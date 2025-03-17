@@ -3,23 +3,43 @@
 <script lang="ts">
 	import type { letterTile } from '../../types/tiles';
 	import { dndzone, SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
+	import { Content, Trigger, Modal } from 'sv-popup';
 	
 	import Tile from './Tile.svelte';
 
 	import { setsquareContext } from '$lib/context';
+    import Select from './Select.svelte';
+
 
 	let items: letterTile[] = $state([]);
 
-	let { dragDisabled = $bindable(false), color, type, mult, squere_id}: {dragDisabled: boolean, color: string, type: string, mult: number, squere_id: number} = $props();
+	let { pointValue = $bindable(0), dragDisabled = $bindable(false), color, type, mult, squere_id}: {pointValue: number, dragDisabled: boolean, color: string, type: string, mult: number, squere_id: number} = $props();
 
 	function handleDnd(e: any) {
 		items = e.detail.items;
 	}
 
+	function setTileBlank() {
+		items[0].letter = '?';
+	}
+
+	let pointerDown = $state(true);
+
+	function tilePoints() {
+		items.forEach((item, index) => {
+			if (pointValue >= item.points) {
+				return pointValue
+			} else {
+				return item.points
+			}	
+		});
+		
+	}
+
 
 	let options = $derived({
-			dropFromOthersDisabled: items.length,
-			items,
+			dropFromOthersDisabled: items.length > 0,
+			items,	
 			dropTargetStyle: {},
 			flipDurationMs: 100,
 			dragDisabled: dragDisabled
@@ -27,6 +47,17 @@
 
 	$effect(() => {
 		options
+		items
+
+		// kui ruudule pantakse ?
+		items.forEach((item, index) => {
+			// kui on liigutav
+			if (item.points === 0 && !dragDisabled) {
+				item.letter = '?';
+			}
+
+			// kui on boonusruute kasutatud, muudame punktisummat
+		});
 	})
 
 </script>
@@ -36,7 +67,22 @@
 	{#if items.length}
 		{#each items as tile(tile.id)}
 			{setsquareContext(squere_id, tile)}
-			<Tile bind:letter={tile.letter} bind:points={tile.points}/>
+			{#if tile.points === 0 && !dragDisabled && tile.letter === '?'}
+			<Modal basic close={tile.letter !== '?'} button={false}> 
+				{#if !pointerDown }
+				<Content>
+					{setTileBlank()}
+					<Select bind:tile_letter={tile.letter}/>
+				</Content>
+				{/if}	
+				<Trigger>
+					<Tile bind:pointerDown={pointerDown} bind:letter={tile.letter} bind:points={tile.points}/>
+				</Trigger>
+				
+			  </Modal>
+			{:else}
+				<Tile bind:pointerDown={pointerDown} bind:letter={tile.letter} bind:points={tile.points}/>
+			{/if}
 		{/each}
 	{:else}		
 		{mult}W
@@ -44,11 +90,27 @@
 </div>
 
 {:else if type === 'letter'}
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="square prevent-select" style="{items.find(tile => tile[SHADOW_ITEM_MARKER_PROPERTY_NAME]) ? 'background: rgba(255, 255, 255, 0.2)': ''}; background-color: {color}" use:dndzone={options} onconsider={handleDnd} onfinalize={handleDnd}>
 	{#if items.length}
 		{#each items as tile(tile.id)}
 			{setsquareContext(squere_id, tile)}
-			<Tile bind:letter={tile.letter} bind:points={tile.points}/>
+			{#if tile.points === 0 && !dragDisabled && tile.letter === '?'}
+			<Modal basic close={tile.letter !== '?'} button={false}> 
+				{#if !pointerDown }
+				<Content>
+					{setTileBlank()}
+					<Select bind:tile_letter={tile.letter}/>
+				</Content>
+				{/if}	
+				<Trigger>
+					<Tile bind:pointerDown={pointerDown} bind:letter={tile.letter} bind:points={tile.points}/>
+				</Trigger>
+				
+			  </Modal>
+			{:else}
+				<Tile bind:pointerDown={pointerDown} bind:letter={tile.letter} bind:points={tile.points}/>
+			{/if}
 		{/each}
 	{:else}
 		{mult}L
@@ -56,14 +118,32 @@
 </div>
 
 {:else}
-<div class="square" style="{items.find(tile => tile[SHADOW_ITEM_MARKER_PROPERTY_NAME]) ? 'background: rgba(255, 255, 255, 0.2)': ''}; background-color: {color}" use:dndzone={options} onconsider={handleDnd} onfinalize={handleDnd}>
+<div class="square prevent-select" style=" background-color: {color}" use:dndzone={options} onconsider={handleDnd} onfinalize={handleDnd}>
 	{#each items as tile(tile.id)}
 		{setsquareContext(squere_id, tile)}
-		<Tile bind:letter={tile.letter} bind:points={tile.points}/>
+		{#if tile.points === 0 && !dragDisabled && tile.letter === '?'}
+			<Modal basic close={tile.letter !== '?'} button={false}> 
+				{#if !pointerDown }
+				<Content>
+					{setTileBlank()}
+					<Select bind:tile_letter={tile.letter}/>
+				</Content>
+				{/if}	
+				<Trigger>
+					<Tile bind:pointerDown={pointerDown} bind:letter={tile.letter} bind:points={tile.points}/>
+				</Trigger>
+				
+			  </Modal>
+			{:else}
+				<Tile bind:pointerDown={pointerDown} bind:letter={tile.letter} bind:points={tile.points}/>
+			{/if}
 	{/each}
 </div>
 
 {/if}
+
+		
+	
 
 
 <style>
@@ -77,6 +157,7 @@
 		display: grid;
 		justify-content: center;
 		align-items: center;
+		color: #484848;
 	}
 
 	.prevent-select {

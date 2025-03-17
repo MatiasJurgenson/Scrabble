@@ -14,18 +14,22 @@ for (let row = 0; row < 15; row++) {
           board[row][collumn] = {
             id: tile_id,
             multipliyer: 1,
-            letter: undefined,
+            dragDisabled: false,
             type: "center",
-            color: "black"
+            color: "#d3d3d3", // pastel gray
+            hasLetter: false,
+            value: 0
           }
         // kui on 3x sõna
         } else {
           board[row][collumn] = {
             id: tile_id,
             multipliyer: 3,
-            letter: undefined,
+            dragDisabled: false,
             type: "word",
-            color: "#FF4141"
+            color: "#ff9999", // pastel red
+            hasLetter: false,
+            value: 0
           }
         } 
       }
@@ -37,9 +41,11 @@ for (let row = 0; row < 15; row++) {
         board[row][collumn] = {
             id: tile_id,
             multipliyer: 2,
-            letter: undefined,
+            dragDisabled: false,
             type: "word",
-            color: "#FFBC41"
+            color: "#ffcc99", // pastel orange
+            hasLetter: false,
+            value: 0
         }
       }
     }
@@ -51,9 +57,11 @@ for (let row = 0; row < 15; row++) {
         board[row][collumn] = {
             id: tile_id,
             multipliyer: 3,
-            letter: undefined,
+            dragDisabled: false,
             type: "letter",
-            color: "#416DFF"
+            color: "#99ccff", // pastel blue
+            hasLetter: false,
+            value: 0
         }
       }
       // keskmised read
@@ -61,9 +69,11 @@ for (let row = 0; row < 15; row++) {
         board[row][collumn] = {
             id: tile_id,
             multipliyer: 3,
-            letter: undefined,
+            dragDisabled: false,
             type: "letter",
-            color: "#416DFF"
+            color: "#99ccff", // pastel blue
+            hasLetter: false,
+            value: 0
         }
       }
     }
@@ -74,9 +84,11 @@ for (let row = 0; row < 15; row++) {
         board[row][collumn] = {
             id: tile_id,
             multipliyer: 2,
-            letter: undefined,
+            dragDisabled: false,
             type: "letter",
-            color: "#41DCFF"
+            color: "#99ffcc", // pastel green
+            hasLetter: false,
+            value: 0
         }
       }
     }
@@ -86,9 +98,11 @@ for (let row = 0; row < 15; row++) {
         board[row][collumn] = {
             id: tile_id,
             multipliyer: 2,
-            letter: undefined,
+            dragDisabled: false,
             type: "letter",
-            color: "#41DCFF"
+            color: "#99ffcc", // pastel green
+            hasLetter: false,
+            value: 0
         }
       }
     }
@@ -98,9 +112,11 @@ for (let row = 0; row < 15; row++) {
         board[row][collumn] = {
             id: tile_id,
             multipliyer: 2,
-            letter: undefined,
+            dragDisabled: false,
             type: "letter",
-            color: "#41DCFF"
+            color: "#99ffcc", // pastel green
+            hasLetter: false,
+            value: 0
         }
       }
     }
@@ -110,9 +126,11 @@ for (let row = 0; row < 15; row++) {
         board[row][collumn] = {
             id: tile_id,
             multipliyer: 2,
-            letter: undefined,
+            dragDisabled: false,
             type: "letter",
-            color: "#41DCFF"
+            color: "#99ffcc", // pastel green
+            hasLetter: false,
+            value: 0
         }
       }
     }
@@ -126,9 +144,11 @@ for (let row = 0; row < 15; row++) {
       board[row][collumn] = {
           id: row * 15 + collumn,
           multipliyer: 1,
-          letter: undefined,
+          dragDisabled: false,
           type: "normal",
-          color: "bisque"
+          color: "#ffe4c4", // pastel bisque
+          hasLetter: false,
+          value: 0
       }
     }
   }

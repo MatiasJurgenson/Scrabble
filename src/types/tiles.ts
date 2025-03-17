@@ -2,6 +2,7 @@ export interface letterTile {
     points: number;
     letter: string;
     id: number;
+    isDndShadowItem?: boolean;
 };
 
 export interface boardTile {
@@ -10,4 +11,6 @@ export interface boardTile {
     id: number;
     color: string;
     dragDisabled: boolean;
+    hasLetter: boolean;
+    value: number;
 };
