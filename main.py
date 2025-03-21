@@ -7,6 +7,7 @@ import nltk
 import sys
 sys.path.append('/words/prog')
 from words.prog import stats
+from words.prog import teema_gen
 
 nltk.download('punkt_tab')
 
@@ -67,13 +68,10 @@ def sonastik_data():
 @app.route('/teema')
 def teema_data():
     sõne = request.args.get('sone')
-    synod = sõne_to_synod(sõne)
 
-    #synod = Wordnet(version='2.3.2')[sõne]
-    teema = [s.name.split('.') for s in synod]
+    teema = teema_gen.teema_to_sõnastik(sõne)
 
-    # TODO - statistika
-    statistika = {}
+    statistika = stats.letter_stats_gen(teema)
     
     data = {'sõnastik': teema, 'stats': statistika}
     return jsonify(data)

@@ -142,10 +142,6 @@
 
 {/if}
 
-		
-	
-
-
 <style>
 	.square {
 		border: 1px solid #828282;
