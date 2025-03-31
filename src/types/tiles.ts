@@ -11,6 +11,6 @@ export interface boardTile {
     id: number;
     color: string;
     dragDisabled: boolean;
-    hasLetter: boolean;
+    letter: letterTile | null;
     value: number;
 };

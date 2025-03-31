@@ -1,9 +1,8 @@
-
 <script lang="ts">
 
-let letters = [ 'A', 'B', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'Š', 'Z', 'Ž', 'T', 'U', 'V', 'Õ', 'Ä', 'Ö', 'Ü' ]
+    let letters = [ 'A', 'B', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'Š', 'Z', 'Ž', 'T', 'U', 'V', 'Õ', 'Ä', 'Ö', 'Ü' ]
 
-let { tile_letter = $bindable('?')} = $props();
+    let { tile_letter = $bindable('?')} = $props();
 
 </script>    
 

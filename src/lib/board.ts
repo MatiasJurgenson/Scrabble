@@ -1,4 +1,5 @@
-import { type boardTile } from "../types/tiles";
+import { type boardTile, type letterTile } from "../types/tiles";
+import { getAllsquareContext } from "./context";
 
 let board: boardTile[][] = Array.from({ length: 15 }, () => Array(15).fill(null));
 
@@ -17,7 +18,7 @@ for (let row = 0; row < 15; row++) {
             dragDisabled: false,
             type: "center",
             color: "#d3d3d3", // pastel gray
-            hasLetter: false,
+            letter: null,
             value: 0
           }
         // kui on 3x sõna
@@ -28,7 +29,7 @@ for (let row = 0; row < 15; row++) {
             dragDisabled: false,
             type: "word",
             color: "#ff9999", // pastel red
-            hasLetter: false,
+            letter: null,
             value: 0
           }
         } 
@@ -44,7 +45,7 @@ for (let row = 0; row < 15; row++) {
             dragDisabled: false,
             type: "word",
             color: "#ffcc99", // pastel orange
-            hasLetter: false,
+            letter: null,
             value: 0
         }
       }
@@ -60,7 +61,7 @@ for (let row = 0; row < 15; row++) {
             dragDisabled: false,
             type: "letter",
             color: "#99ccff", // pastel blue
-            hasLetter: false,
+            letter: null,
             value: 0
         }
       }
@@ -72,7 +73,7 @@ for (let row = 0; row < 15; row++) {
             dragDisabled: false,
             type: "letter",
             color: "#99ccff", // pastel blue
-            hasLetter: false,
+            letter: null,
             value: 0
         }
       }
@@ -87,7 +88,7 @@ for (let row = 0; row < 15; row++) {
             dragDisabled: false,
             type: "letter",
             color: "#99ffcc", // pastel green
-            hasLetter: false,
+            letter: null,
             value: 0
         }
       }
@@ -101,7 +102,7 @@ for (let row = 0; row < 15; row++) {
             dragDisabled: false,
             type: "letter",
             color: "#99ffcc", // pastel green
-            hasLetter: false,
+            letter: null,
             value: 0
         }
       }
@@ -115,7 +116,7 @@ for (let row = 0; row < 15; row++) {
             dragDisabled: false,
             type: "letter",
             color: "#99ffcc", // pastel green
-            hasLetter: false,
+            letter: null,
             value: 0
         }
       }
@@ -129,7 +130,7 @@ for (let row = 0; row < 15; row++) {
             dragDisabled: false,
             type: "letter",
             color: "#99ffcc", // pastel green
-            hasLetter: false,
+            letter: null,
             value: 0
         }
       }
@@ -147,7 +148,7 @@ for (let row = 0; row < 15; row++) {
           dragDisabled: false,
           type: "normal",
           color: "#ffe4c4", // pastel bisque
-          hasLetter: false,
+          letter: null,
           value: 0
       }
     }
@@ -155,3 +156,54 @@ for (let row = 0; row < 15; row++) {
 }
 
 export { board };
+
+
+
+let letter_board: letterTile[][] = Array.from({ length: 15 }, () => Array(15).fill(null));
+let pointsboard: number[][] = Array.from({ length: 15 }, () => Array(15).fill(null));
+let vanadRuudud: number[][] = [] 
+
+export function getPointsBoard(): number[][] {
+    return pointsboard;
+}
+
+export function setPointsBoard(points: number[][]): void {
+    pointsboard = points;
+}
+
+export function addToVanadRuudud(x: number, y: number): void {
+  vanadRuudud.push([x, y]);
+}
+    
+
+export function getVanadRuudud(): number[][] {
+    return vanadRuudud;
+}
+
+export function setBoard() {
+  vanadRuudud = [];
+  getAllsquareContext().forEach((value, key) => {
+      let coord_x = key % 15;
+      let coord_y = Math.floor(key / 15);
+      letter_board[coord_y][coord_x] = value;
+      vanadRuudud.push([coord_y, coord_x]);
+  });
+
+  return letter_board;
+}
+
+export function getTempBoard() {
+  let temp_board: letterTile[][] = Array.from({ length: 15 }, () => Array(15).fill(null));
+  getAllsquareContext().forEach((value, key) => {
+      let coord_x = key % 15;
+      let coord_y = Math.floor(key / 15);
+      pointsboard[coord_y][coord_x] = value.points;
+      temp_board[coord_y][coord_x] = value;
+  });
+
+  return temp_board;
+}
+
+export function getBoard() {
+  return letter_board;
+}

@@ -1,7 +1,8 @@
 import { getAllsquareContext, hassquareContext, setsquareContextPoints } from "./context";
 import type { boardTile, letterTile } from "../types/tiles";
-import { board } from '$lib/board.js';
-import { getWords } from './wordList';
+import { board, getBoard, getPointsBoard, setBoard, setPointsBoard, getVanadRuudud, getTempBoard } from '$lib/board.js';
+import { wordlistStore } from './wordList';
+import { get } from 'svelte/store';
 
 const käigud = new Map;
 let mitmes_käik = 1;
@@ -22,11 +23,10 @@ export function getAllKäigud() {
     return käigud;
 }
 
-let vanadRuudud: number[][] = [];
 let uuedRuudud: number[][] = [];
 let allPoints: number = 0;
 let roundPoints: number = 0;
-let pointsboard: number[][] = Array.from({ length: 15 }, () => Array(15).fill(null));
+let pointsboard: number[][] = getPointsBoard();
 let pointsboardUus = structuredClone(pointsboard);
 let uuedPunktid = new Map;
 
@@ -37,6 +37,7 @@ export function getPoints(): number {
 // paneme uued punktiväärtused lauale
 function setPoints() {
     pointsboard = pointsboardUus;
+    setPointsBoard(pointsboard);
 
     pointsboard.forEach((row, row_idx) => {
         row.forEach((tile, tile_idx) => {
@@ -49,18 +50,6 @@ function setPoints() {
             }
         })
     })
-}
-
-function getBoard() {
-    let letter_board: letterTile[][] = Array.from({ length: 15 }, () => Array(15).fill(null));
-    getAllsquareContext().forEach((value, key) => {
-        let coord_x = key % 15;
-        let coord_y = Math.floor(key / 15);
-        letter_board[coord_y][coord_x] = value;
-        pointsboard[coord_y][coord_x] = value.points;
-    });
-
-    return letter_board;
 }
 
 function isLineX(): boolean {
@@ -83,6 +72,7 @@ function isLineY(): boolean {
 }
 
 function InVanadruudud(x: number, y: number): boolean {
+    let vanadRuudud = getVanadRuudud();
     return vanadRuudud.some((ruut) => {
         return ruut[0] === x && ruut[1] === y
     })
@@ -95,11 +85,13 @@ function inUuedruudud(x: number, y: number): boolean {
 }
 
 function getKäik(): string[]{
+
     
     let sõnad: string[] = [];
 
     // genereerime tähtede laua
-    let letterBoard: letterTile[][] = getBoard()
+    let letterBoard: letterTile[][] = getTempBoard()
+    console.log(letterBoard, "letterBoard")
 
     let connected = false;
 
@@ -130,6 +122,9 @@ function getKäik(): string[]{
         })
     })
 
+    console.log(uuedRuudud, "uuedRuudud")
+
+    let vanadRuudud = getVanadRuudud();
     if (!connected && vanadRuudud.length !== 0) {
         return [];
     }
@@ -219,7 +214,7 @@ function getKäik(): string[]{
                     pointsboardUus[x][y] = tile.points * mult
                     return tile.points * mult
                 } else {
-                    pointsboardUus[x][y] = tile.points * mult
+                    pointsboardUus[x][y] = tile.points
                     return tile.points
                 } 
             } else {
@@ -602,7 +597,7 @@ function getKäik(): string[]{
 function checkWord(word: string): boolean {
     word = word.toLowerCase();
     // kontrollime kas sõna on olemas
-    const wordlist = getWords();
+    let wordlist = get(wordlistStore).sõnastik;
     
     if (wordlist.includes(word)) {
         return true;
@@ -610,12 +605,14 @@ function checkWord(word: string): boolean {
     return false;
 }
 
-export function checkKäik(): boolean {
+export function checkKäik(): string[] {
+    pointsboard = getPointsBoard();
+
     if (!hasKäigud(1)) {
         if (!hassquareContext(112)) {
             roundPoints = 0;
             uuedRuudud = [];
-            return false;
+            return [];
         }
     }
 
@@ -628,7 +625,7 @@ export function checkKäik(): boolean {
     if (käik.length === 0) {
         roundPoints = 0;
         uuedRuudud = [];
-        return false;
+        return [];
     } else {
         // vaatame kas sõnad on olemas
         // Check if the words exist
@@ -637,7 +634,7 @@ export function checkKäik(): boolean {
                 console.log('ei ole olemas');
                 roundPoints = 0;
                 uuedRuudud = [];
-                return false;
+                return [];
             }
         }
     }
@@ -647,10 +644,13 @@ export function checkKäik(): boolean {
     setPoints();
 
     setKäigud(käik);
-    vanadRuudud = vanadRuudud.concat(uuedRuudud);
+    setBoard();
+
+    console.log(getBoard(), "getBoard")
+
     uuedRuudud = [];
 
     console.log(pointsboard)
 
-   return true;
+   return käik;
 }

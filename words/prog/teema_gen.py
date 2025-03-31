@@ -162,4 +162,4 @@ def teema_to_sõnastik(teema):
 
     return sõnastik
 
-print(teema_to_sõnastik('auto'))
+print(teema_to_sõnastik('mees'))

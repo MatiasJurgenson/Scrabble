@@ -62,7 +62,9 @@ def sonastik_data():
             statistika = stats.letter_stats_gen(sõnastik)
 
     data = {'sõnastik': sõnastik, 'stats': statistika}
-    return jsonify(data)
+    response = jsonify(data)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 # teema genereerimise jaoks
 @app.route('/teema')
@@ -74,12 +76,15 @@ def teema_data():
     statistika = stats.letter_stats_gen(teema)
     
     data = {'sõnastik': teema, 'stats': statistika}
-    return jsonify(data)
+
+    response = jsonify(data)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 @app.route('/tahendus')
 def tahendus_data():
     sõne = request.args.get('sone')
-    synod = sõne_to_synod(sõne)
+    synod = sõne_to_synod(sõne.lower())
     
     tähendused = []
     for asi in synod:
@@ -89,7 +94,9 @@ def tahendus_data():
         tähendused.append("Tähendust ei leitud")
 
     data = {'sõnastik': tähendused}
-    return jsonify(data)
+    response = jsonify(data)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 #debugger 
 if __name__ == "__main__":

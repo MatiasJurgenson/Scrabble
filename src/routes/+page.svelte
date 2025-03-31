@@ -1,3 +1,9 @@
+<script lang="ts">
+    import { gameInfo } from '$lib/game_type';
+
+    gameInfo.reset();
+</script>
+
 <div class="container">
     <h1>Scrabble</h1>
     <button class="blue">

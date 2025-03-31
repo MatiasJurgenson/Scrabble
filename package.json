@@ -29,6 +29,7 @@
 		"@neodrag/svelte": "^2.3.0",
 		"dotenv": "^16.4.7",
 		"svelte-body": "^2.0.0",
-		"svelte-easy-popover": "^1.0.0"
+		"svelte-easy-popover": "^1.0.0",
+		"svelte-persisted-store": "^0.12.0"
 	}
 }

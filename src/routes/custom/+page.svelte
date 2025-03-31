@@ -1,8 +1,17 @@
 <script lang="ts">
-    import { setGameType, setWordlist, setDifficulty, getGame, setTeema } from "$lib/game_type";
+    import { gen_teema } from "$lib/gen_teema";
+    import { wordlistStore, statsStore } from "$lib/wordList";
+    import { gameInfo } from '$lib/game_type';
+    import { get } from 'svelte/store'
 
-    let game = getGame();
-    let type = "custom";
+    gameInfo.reset();
+
+    gameInfo.update(n => {
+        return {
+            ...n,
+            type: "custom"
+        }
+    });
 
     let difficultys: {id: number, text: string}[] = $state([
         { id: 1, text: "Kerge" },
@@ -20,28 +29,45 @@
     let selected_wordlist: {id: number, text: string} = $state({ id: 1, text: "EKK sõnastik" });
 
     let teema = $state("");
+    let gen = $state(false);
 
-	function handleSubmit(e: any) {
+	async function handleSubmit(e: any) {
 		e.preventDefault();
         // kui on custom, siis peab olema ka teema
+        let game = get(gameInfo);
         if (selected_wordlist.id === 3) {
             if (teema === "") {
                 alert("Sisesta teema!");
                 return;
             } else {
-                
+                gen = true;
+                let data = await gen_teema(teema);
+                let sõnastik = data.sõnastik;
+                console.log("sõnastik");
+                if (sõnastik.length < 1) {
+                    alert("Teemaga ei leitud sõnu!");
+                    return;
+                } else {
+                    wordlistStore.set({ sõnastik: sõnastik });
+                    statsStore.set({ stats: data.stats });
+                }
             }
             
         }
-        
 
-        setGameType(type);
-        setWordlist(selected_wordlist.text);
-        setDifficulty(selected_type.text);
-        if (selected_wordlist.id == 3) {
-            setTeema(teema);
-        }
+        gameInfo.update(n => {
+            return {
+                ...n,
+                teema: teema,
+                wordlist: selected_wordlist.text,
+                difficulty: selected_type.text
+            }
+        });
 
+        game = get(gameInfo);
+        console.log(game);
+
+        window.location.href = "/game";
         
 	}
     
@@ -72,19 +98,14 @@
         <input bind:value={teema} type="text" placeholder="Sisesta teema" />
     {/if}
 
-	<button type="submit">
+	<button type="submit" >
 		Mängi
 	</button>
 </form>
 
-<p>
-	selected question {selected_type
-		? selected_type.id
-		: '[waiting...]'}
-    selected question {selected_wordlist
-		? selected_wordlist.id
-		: '[waiting...]'}
-</p>
+{#if gen}
+    <p>Genereerime sõnastikku. Palun oodake</p>
+{/if}
 
 <style>
 

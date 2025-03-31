@@ -1,7 +1,8 @@
+<!-- svelte-ignore state_referenced_locally -->
 <!-- baasfail: https://svelte.dev/playground/ed2e138417094281be6db1aef23d7859?version=3.59.2-->
 
 <script lang="ts">
-	import type { letterTile } from '../../types/tiles';
+	import { type letterTile } from '../../types/tiles';
 	import { dndzone, SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
 	import { Content, Trigger, Modal } from 'sv-popup';
 	
@@ -13,7 +14,7 @@
 
 	let items: letterTile[] = $state([]);
 
-	let { pointValue = $bindable(0), dragDisabled = $bindable(false), color, type, mult, squere_id}: {pointValue: number, dragDisabled: boolean, color: string, type: string, mult: number, squere_id: number} = $props();
+	let { letter = $bindable(null), pointValue = $bindable(0), dragDisabled = $bindable(false), color, type, mult, squere_id}: {letter: letterTile | null, pointValue: number, dragDisabled: boolean, color: string, type: string, mult: number, squere_id: number} = $props();
 
 	function handleDnd(e: any) {
 		items = e.detail.items;
@@ -36,10 +37,9 @@
 		
 	}
 
-
 	let options = $derived({
 			dropFromOthersDisabled: items.length > 0,
-			items,	
+			items: items,
 			dropTargetStyle: {},
 			flipDurationMs: 100,
 			dragDisabled: dragDisabled
@@ -48,6 +48,8 @@
 	$effect(() => {
 		options
 		items
+		letter
+		pointValue
 
 		// kui ruudule pantakse ?
 		items.forEach((item, index) => {
@@ -58,6 +60,10 @@
 
 			// kui on boonusruute kasutatud, muudame punktisummat
 		});
+
+		return () => {
+			items = (letter !== null) ? [letter] : items;
+		}
 	})
 
 </script>
@@ -136,7 +142,7 @@
 			  </Modal>
 			{:else}
 				<Tile bind:pointerDown={pointerDown} bind:letter={tile.letter} bind:points={tile.points}/>
-			{/if}
+			{/if}	
 	{/each}
 </div>
 
