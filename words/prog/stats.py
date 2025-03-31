@@ -87,8 +87,8 @@ with open("words/lemmad_alfa.txt", "r", encoding='utf-8-sig') as my_file:
         wordlist.append(rida)
     stats = letter_stats_gen(wordlist)
 
-    for key in stats:
-        print(key, stats[key])
+    #for key in stats:
+        #print(key, stats[key])
 
 
 
