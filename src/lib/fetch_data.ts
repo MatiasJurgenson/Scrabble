@@ -12,8 +12,8 @@ export async function load() {
         console.log('game:', game);
         let url = '';
         if (game.type === 'classic') {
-            url = 'http://localhost:5000/sonastik?nr=3';
-            //url = 'https://scrabble.matias.ee/api/sonastik?nr=3';
+            //url = 'http://localhost:5000/sonastik?nr=3';
+            url = 'https://scrabble.matias.ee/api/sonastik?nr=3';
         } else if (game.type === 'custom') {
             if (game.wordlist === 'EKK sõnastik') {
                 url = 'https://scrabble.matias.ee/api/sonastik?nr=3';

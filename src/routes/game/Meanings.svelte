@@ -9,7 +9,7 @@ let meanings = $state(new Map<string, string[]>())
 
 async function getMeaning(word: string) {
     
-    let response = await fetch('http://localhost:5000/tahendus?sone=' + word)
+    let response = await fetch('https://scrabble.matias.ee/api/tahendus?sone=' + word)
     let data = await response.json()
     return data.sõnastik
 }
