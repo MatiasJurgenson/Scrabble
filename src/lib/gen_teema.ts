@@ -1,6 +1,6 @@
 export async function gen_teema(teema: string): Promise<{stats: any, sõnastik: string[]}> {
-    const url = 'http://localhost:5000/teema?sone=' + teema;
-    // const url = 'https://scrabble.matias.ee/api/teema?sone=' + teema;
+    //const url = 'http://localhost:5000/teema?sone=' + teema;
+     const url = 'https://scrabble.matias.ee/api/teema?sone=' + teema;
     const response = await fetch(url);
 
     if (!response.ok) {
