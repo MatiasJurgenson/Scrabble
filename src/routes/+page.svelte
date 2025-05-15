@@ -8,8 +8,15 @@
     <h1>Scrabble</h1>
     <button class="blue">
         <a href="/game">Klassikaline</a>
+    </button>
+
+    <button class="blue">
+        <a href="/custom">Kohandatud</a>
+    </button>
+
+    <button class="blue">
+        <a href="/rules">Juhend</a>
     </button> 
-    <button class="blue"><a href="/custom">Kohandatud</a></button> 
 </div>
 
 <style>
